@@ -1,0 +1,32 @@
+#!/bin/bash
+LOG_DIR="$AIRFLOW_HOME"/logs
+# >>>
+# >>> Airflow Worker <<<
+# >>>
+# mkdir -p "$LOG_DIR"/worker
+# echo "Starting Airflow Worker"
+# airflow celery worker -D --pid "$LOG_DIR"/worker/airflow-worker.pid
+# >>>
+# >>> Airflow Webserver <<<
+# >>>
+mkdir -p "$LOG_DIR"/webserver
+echo "Starting Airflow Webserver"
+PORT=8081
+airflow webserver -D \
+    --port $PORT \
+    -A $LOG_DIR/webserver/airflow-webserver.out \
+    -E $LOG_DIR/webserver/airflow-webserver.err \
+    -l $LOG_DIR/webserver/airflow-webserver.log \
+    --pid $LOG_DIR/webserver/airflow-webserver.pid \
+    --stderr $LOG_DIR/webserver/airflow-webserver.stderr \
+    --stdout $LOG_DIR/webserver/airflow-webserver.stdout
+# >>>
+# >>> Airflow Scheduler <<<
+# >>>
+mkdir -p "$LOG_DIR"/scheduler
+echo "Starting Airflow Scheduler"
+airflow scheduler -D \
+    -l $LOG_DIR/scheduler/airflow-scheduler.log \
+    --pid $LOG_DIR/scheduler/airflow-scheduler.pid \
+    --stderr $LOG_DIR/scheduler/airflow-scheduler.stderr \
+    --stdout $LOG_DIR/scheduler/airflow-scheduler.stdout

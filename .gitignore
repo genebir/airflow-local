@@ -1,0 +1,9 @@
+## ignore log files
+*.log
+*.err
+*.out
+*.stderr
+*.stdout
+
+## ignore pid files
+*.pid

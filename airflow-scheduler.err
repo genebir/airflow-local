@@ -1,5 +1,0 @@
-[2023-08-31 13:40:37 +0900] [104141] [INFO] Starting gunicorn 21.2.0
-[2023-08-31 13:40:37 +0900] [104141] [INFO] Listening at: http://[::]:8793 (104141)
-[2023-08-31 13:40:37 +0900] [104141] [INFO] Using worker: sync
-[2023-08-31 13:40:37 +0900] [104142] [INFO] Booting worker with pid: 104142
-[2023-08-31 13:40:37 +0900] [104143] [INFO] Booting worker with pid: 104143
