@@ -7,11 +7,37 @@ LOG_DIR="$AIRFLOW_HOME"/logs
 # echo "Starting Airflow Worker"
 # airflow celery worker -D --pid "$LOG_DIR"/worker/airflow-worker.pid
 # >>>
+# >>> Airflow Scheduler <<<
+# >>>
+mkdir -p "$LOG_DIR"/scheduler
+echo ">>>>>>>>>>>>>>>>>>>>>>>>>>"
+echo "Starting Airflow Scheduler"
+echo "<<<<<<<<<<<<<<<<<<<<<<<<<<"
+SCHEDULER_PID_FILE="$LOG_DIR"/scheduler/airflow-scheduler.pid
+if [ -f "$SCHEDULER_PID_FILE" ]; then
+  echo "Killing previous Airflow scheduler"
+  cat "$SCHEDULER_PID_FILE" | xargs kill -15
+  rm -f "$SCHEDULER_PID_FILE"
+fi
+airflow scheduler -D \
+    -l $LOG_DIR/scheduler/airflow-scheduler.log \
+    --pid $LOG_DIR/scheduler/airflow-scheduler.pid \
+    --stderr $LOG_DIR/scheduler/airflow-scheduler.stderr \
+    --stdout $LOG_DIR/scheduler/airflow-scheduler.stdout
+# >>>
 # >>> Airflow Webserver <<<
 # >>>
 mkdir -p "$LOG_DIR"/webserver
+echo ">>>>>>>>>>>>>>>>>>>>>>>>>>"
 echo "Starting Airflow Webserver"
-PORT=8081
+echo "<<<<<<<<<<<<<<<<<<<<<<<<<<"
+WEBSERVER_PID_FILE="$LOG_DIR"/webserver/airflow-webserver.pid
+if [ -f "$WEBSERVER_PID_FILE" ]; then
+  echo "Killing previous Airflow webserver"
+  cat "$WEBSERVER_PID_FILE" | xargs kill -15
+  rm -f "$WEBSERVER_PID_FILE"
+fi
+PORT=8080
 airflow webserver -D \
     --port $PORT \
     -A $LOG_DIR/webserver/airflow-webserver.out \
@@ -20,13 +46,3 @@ airflow webserver -D \
     --pid $LOG_DIR/webserver/airflow-webserver.pid \
     --stderr $LOG_DIR/webserver/airflow-webserver.stderr \
     --stdout $LOG_DIR/webserver/airflow-webserver.stdout
-# >>>
-# >>> Airflow Scheduler <<<
-# >>>
-mkdir -p "$LOG_DIR"/scheduler
-echo "Starting Airflow Scheduler"
-airflow scheduler -D \
-    -l $LOG_DIR/scheduler/airflow-scheduler.log \
-    --pid $LOG_DIR/scheduler/airflow-scheduler.pid \
-    --stderr $LOG_DIR/scheduler/airflow-scheduler.stderr \
-    --stdout $LOG_DIR/scheduler/airflow-scheduler.stdout

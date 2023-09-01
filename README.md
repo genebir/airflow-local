@@ -1,18 +1,12 @@
 
 <h1>Airflow</h1>
 
->MWAA 환경에서의 개발과 별개로 로컬에서 Airflow를 사용하기 위한 인프라 구성
->
->개발에 대한 깊은 이해도를 위해 인프라부터 구성해보기로 한다.
-
-
 <h3>환경구성</h3>
 
->ubuntu:22.04
-> 
->airflow:2.7.0
-> 
->postgresql:14
+> ubuntu:22.04
+> airflow:2.7.0
+> postgresql:14
+> python:3.10
 
 
 ***
@@ -32,4 +26,35 @@ pip install "apache-airflow==${AIRFLOW_VERSION}" --constraint "${CONSTRAINT_URL}
 
 airflow version
 ```
+
+***
+
+<h3>2. Meta DB 연결</h3>
+
+```bash
+vi airflow.cfg
+
+[database]
+..
+sql_alchemy_conn = postgresql+psycopg2://<username>:<password>@localhost:5432/airflow_db
+..
+```
+
+```bash
+airflow db init
+```
+
+***
+
+<h3>3. Executor 설정</h3>
+
+```bash
+vi airflow.cfg
+
+[core]
+..
+executor = LocalExecutor
+..
+```
+
 
